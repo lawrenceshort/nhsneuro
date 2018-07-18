@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="nhsneuroModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Conditions">
+          <Key>
+            <PropertyRef Name="ConditionID" />
+          </Key>
+          <Property Name="ConditionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="500" />
+          <Property Name="Description" Type="nvarchar" MaxLength="4000" />
+          <Property Name="IsRare" Type="bit" Nullable="false" />
+          <Property Name="SnoMedId" Type="int" />
+        </EntityType>
+        <EntityType Name="ConditionSymptom">
+          <Key>
+            <PropertyRef Name="SymptomID" />
+            <PropertyRef Name="ConditionID" />
+          </Key>
+          <Property Name="SymptomID" Type="int" Nullable="false" />
+          <Property Name="ConditionID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Symptoms">
+          <Key>
+            <PropertyRef Name="SymptomID" />
+          </Key>
+          <Property Name="SymptomID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="2000" Nullable="false" />
+          <Property Name="SnoMedId" Type="int" />
+        </EntityType>
+        <EntityContainer Name="nhsneuroModelStoreContainer">
+          <EntitySet Name="Conditions" EntityType="Self.Conditions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ConditionSymptom" EntityType="Self.ConditionSymptom" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Symptoms" EntityType="Self.Symptoms" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="nhsneuroModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Condition">
+          <Key>
+            <PropertyRef Name="ConditionID" />
+          </Key>
+          <Property Name="ConditionID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="IsRare" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ConditionSymptoms" Relationship="nhsneuroModel.ConditionConditionSymptom" FromRole="Condition" ToRole="ConditionSymptom" />
+          <Property Name="SnoMedId" Type="Int32" />
+        </EntityType>
+        <EntityType Name="ConditionSymptom">
+          <Key>
+            <PropertyRef Name="SymptomID" />
+            <PropertyRef Name="ConditionID" />
+          </Key>
+          <Property Name="SymptomID" Type="Int32" Nullable="false" />
+          <Property Name="ConditionID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Condition" Relationship="nhsneuroModel.ConditionConditionSymptom" FromRole="ConditionSymptom" ToRole="Condition" />
+          <NavigationProperty Name="Symptom" Relationship="nhsneuroModel.SymptomConditionSymptom" FromRole="ConditionSymptom" ToRole="Symptom" />
+        </EntityType>
+        <EntityType Name="Symptom">
+          <Key>
+            <PropertyRef Name="SymptomID" />
+          </Key>
+          <Property Name="SymptomID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="ConditionSymptoms" Relationship="nhsneuroModel.SymptomConditionSymptom" FromRole="Symptom" ToRole="ConditionSymptom" />
+          <Property Name="SnoMedId" Type="Int32" />
+        </EntityType>
+        <EntityContainer Name="nhsneuroEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Conditions" EntityType="Self.Condition" />
+          <EntitySet Name="ConditionSymptoms" EntityType="Self.ConditionSymptom" />
+          <EntitySet Name="Symptoms" EntityType="Self.Symptom" />
+          <AssociationSet Name="ConditionConditionSymptom" Association="nhsneuroModel.ConditionConditionSymptom">
+            <End Role="Condition" EntitySet="Conditions" />
+            <End Role="ConditionSymptom" EntitySet="ConditionSymptoms" />
+          </AssociationSet>
+          <AssociationSet Name="SymptomConditionSymptom" Association="nhsneuroModel.SymptomConditionSymptom">
+            <End Role="Symptom" EntitySet="Symptoms" />
+            <End Role="ConditionSymptom" EntitySet="ConditionSymptoms" />
+          </AssociationSet>
+        </EntityContainer>
+        <Association Name="ConditionConditionSymptom">
+          <End Type="nhsneuroModel.Condition" Role="Condition" Multiplicity="1" />
+          <End Type="nhsneuroModel.ConditionSymptom" Role="ConditionSymptom" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Condition">
+              <PropertyRef Name="ConditionID" />
+            </Principal>
+            <Dependent Role="ConditionSymptom">
+              <PropertyRef Name="ConditionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SymptomConditionSymptom">
+          <End Type="nhsneuroModel.Symptom" Role="Symptom" Multiplicity="1" />
+          <End Type="nhsneuroModel.ConditionSymptom" Role="ConditionSymptom" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Symptom">
+              <PropertyRef Name="SymptomID" />
+            </Principal>
+            <Dependent Role="ConditionSymptom">
+              <PropertyRef Name="SymptomID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="nhsneuroModelStoreContainer" CdmEntityContainer="nhsneuroEntities">
+          <EntitySetMapping Name="Conditions">
+            <EntityTypeMapping TypeName="nhsneuroModel.Condition">
+              <MappingFragment StoreEntitySet="Conditions">
+                <ScalarProperty Name="SnoMedId" ColumnName="SnoMedId" />
+                <ScalarProperty Name="ConditionID" ColumnName="ConditionID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="IsRare" ColumnName="IsRare" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ConditionSymptoms">
+            <EntityTypeMapping TypeName="nhsneuroModel.ConditionSymptom">
+              <MappingFragment StoreEntitySet="ConditionSymptom">
+                <ScalarProperty Name="SymptomID" ColumnName="SymptomID" />
+                <ScalarProperty Name="ConditionID" ColumnName="ConditionID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Symptoms">
+            <EntityTypeMapping TypeName="nhsneuroModel.Symptom">
+              <MappingFragment StoreEntitySet="Symptoms">
+                <ScalarProperty Name="SnoMedId" ColumnName="SnoMedId" />
+                <ScalarProperty Name="SymptomID" ColumnName="SymptomID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
