@@ -34,12 +34,39 @@
         }
     </table>
 
+    <select
+        name="symptoms"
+        data-source="http://nhsneuro.azurewebsites.net/API/symptoms"
+        data-valueKey="SymptomId"
+        data-displayKey="Name">
+    </select>
+
     @section scripts{
         <script type="text/javascript">
-            //$.ajax({
-            //    url: "/api/symptoms",
+            $('select[data-source]').each(function() {
+                var $select = $(this);
 
-            //})
+                $select.append('<option></option>');
+
+                $.ajax({
+                    url: $select.attr('data-source');
+                }).then(function(options) {
+                    options.map(function(option) {
+                        var $option = $('<option>');
+
+                        $option
+                            .val(option[$select.attr('data-valueKey')])
+                            .text(option[$select.attr('data-displayKey')]);
+
+                        $select.append($option);
+
+                    });
+                });
+            });
+
+            //$.ajax({
+                //url: "/api/symptoms",
+                //})
         </script>
     }
 
