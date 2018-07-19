@@ -23,7 +23,7 @@ namespace Nhsneuro
         public int ConditionID { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public bool IsRare { get; set; }
+        public Nullable<bool> IsRare { get; set; }
         public Nullable<int> SnoMedId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
