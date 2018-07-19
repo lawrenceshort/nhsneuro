@@ -101,10 +101,10 @@
             function addItem(){
                 var table = document.getElementById("selectedSymptoms");
                 var symptom = document.getElementById("symptomsSelectList").options[document.getElementById("symptomsSelectList").selectedIndex].text;
-                var row = table.insertRow(-1);
                 var symptomId = document.getElementById("symptomsSelectList").options[document.getElementById("symptomsSelectList").selectedIndex].value;
 
-                if !($('#selectedSymptoms td:contains(' + symptom +')'.length){
+                if (!$('#selectedSymptoms td:contains(' + symptom + ')').length > 0) {
+                    var row = table.insertRow(-1);
                     var cell1 = row.insertCell(0);
                     var cell2 = row.insertCell(1);
 
