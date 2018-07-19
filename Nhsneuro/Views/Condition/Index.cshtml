@@ -15,7 +15,7 @@
         <th>Selected Symptoms</th>
     </table>
 
-    <table id="conditionList" data-source="/api/conditions" class="table table-bordered table-striped table-responsive">
+    <table id="conditionList" data-source="/api/conditions/" class="table table-bordered table-striped table-responsive">
         <thead>
             <tr>
                 <th>Name</th>
@@ -25,36 +25,6 @@
                 <th>Symptoms</th>
             </tr>
         </thead>
-    </table>
-
-    <table class="table table-bordered table-striped table-responsive">
-        <th>Name</th>
-        <th>Description</th>
-        <th>Rare</th>
-        <th>SnoMedID</th>
-        <th>Symptoms</th>
-        @foreach (var Condition in ViewData["Conditions"] as IEnumerable
-        <Condition>
-            )
-            {
-            <tr>
-                <td>@Condition.Name</td>
-                <td>@Condition.Description</td>
-                <td>@Condition.IsRare</td>
-                <td>@Condition.SnoMedId</td>
-                <td>
-                    @if (@Condition.ConditionSymptoms.Any())
-                    {
-                    <ol>
-                        @foreach (var symptom in @Condition.ConditionSymptoms.Select(s => s.Symptom.Name))
-                        {
-                        <li>@symptom</li>
-                        }
-                    </ol>
-                    }
-                </td>
-            </tr>
-            }
     </table>
 
     @section scripts{
@@ -83,11 +53,23 @@
             $('table[data-source]').each(function() {
                 var $table = $(this);
 
-                var table = document.getElementById("conditionList");
 
+
+                getConditions(null);
+            });
+
+            function getConditions(ids){
+
+                $("#conditionList tr").remove();
+                var url = $("#conditionList").attr('data-source');
+                if(ids != null)
+                {
+                    url = url.concat(ids);
+                }
                 $.ajax({
-                    url: $table.attr('data-source')
+                    url: url
                 }).then(function(data) {
+                    var table = document.getElementById("conditionList");
                     data.map(function(datum) {
                        var row = table.insertRow(-1);
 
@@ -112,20 +94,37 @@
 
                     });
                 });
-
-
-            });
+            }
 
             function addItem(){
                 var table = document.getElementById("selectedSymptoms");
                 var symptom = document.getElementById("symptomsSelectList").options[document.getElementById("symptomsSelectList").selectedIndex].text;
                 var row = table.insertRow(-1);
+                var symptomId = document.getElementById("symptomsSelectList").options[document.getElementById("symptomsSelectList").selectedIndex].value;
 
                 var cell1 = row.insertCell(0);
                 var cell2 = row.insertCell(1);
 
-                cell1.innerHTML = symptom;
-                cell2.innerHTML = "I WILL BE A BUTTON";
+                cell1.addClass = "id";
+                cell1.innerHTML = symptomId;
+                cell2.innerHTML = symptom;
+
+                var ids = "";
+                var i = 0;
+                $("#selectedSymptoms tr").each(function() {
+                    if (i > 0){
+                        if(id = 1)
+                        {
+                            ids = $(this).children(":first").html();
+                        }
+                        else
+                        {
+                        ids = ids.concat($(this).children(":first").html(), ",");
+                        }
+                    }
+                    i++;
+                });
+                getConditions(ids);
             }
     </script>
     }
