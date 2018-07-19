@@ -5,6 +5,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Security.Cryptography.X509Certificates;
     using System.Web.Http;
     using System.Web.Http.Cors;
 
@@ -36,39 +37,40 @@
         [Route("api/Conditions")]
         public IEnumerable<ConditionModel> GetConditions()
         {
-            return dbContext.Conditions.Select(
-                condition => new ConditionModel()
+            var result = from condition in dbContext.Conditions
+                join conditionSymptom in dbContext.ConditionSymptoms on condition.ConditionID equals
+                    conditionSymptom.ConditionID into conditionSymptoms
+                select new ConditionModel()
                 {
                     Description = condition.Description,
                     IsRare = condition.IsRare,
                     Name = condition.Name,
-                    SnowMedID = condition.SnoMedId,
-                    Symptoms = condition.ConditionSymptoms.Any()
-                        ? condition.ConditionSymptoms.Select(conditionSymptom => conditionSymptom.Symptom.Name)
-                        : null
-                });
+                    SnoMedID = condition.SnoMedId,
+                    Symptoms = conditionSymptoms.Select(x => x.Symptom.Name)
+                };
+            return result;
         }
 
         [HttpGet]
-        [Route("api/Condtions/{symptomIds}")]
+        [Route("api/Conditions/{symptomIds}")]
         public IEnumerable<ConditionModel> GetConditions(string symptomIds)
         {
             var listOfSymptomIdStrings = symptomIds.Split(',').Select(str => str.Trim());
             var listOfSymptomIdInts = listOfSymptomIdStrings.Select(str => Convert.ToInt32(str));
-
-            var results = dbContext.Conditions.Where(
-                condition => condition.ConditionSymptoms.Any(
-                    conditionSymptom => listOfSymptomIdInts.Contains(conditionSymptom.SymptomID))).Select(condition => new ConditionModel()
-            {
-                Description = condition.Description,
-                IsRare = condition.IsRare,
-                Name = condition.Name,
-                SnowMedID = condition.SnoMedId,
-                Symptoms = condition.ConditionSymptoms.Any()
-                    ? condition.ConditionSymptoms.Select(conditionSymptom => conditionSymptom.Symptom.Name)
-                    : null
-                    });
-            return results;
+            var result = from condition in dbContext.Conditions
+                join conditionSymptom in dbContext.ConditionSymptoms on condition.ConditionID equals
+                    conditionSymptom.ConditionID into conditionSymptoms
+                         where conditionSymptoms.Any(x => listOfSymptomIdInts.Contains(x.SymptomID))
+                orderby conditionSymptoms.Count(cs => listOfSymptomIdInts.Contains(cs.SymptomID )) descending 
+                select new ConditionModel()
+                {
+                    Description = condition.Description,
+                    IsRare = condition.IsRare,
+                    Name = condition.Name,
+                    SnoMedID = condition.SnoMedId,
+                    Symptoms = conditionSymptoms.Select(x => x.Symptom.Name)
+                };
+            return result;
         }
 
         [HttpGet]
