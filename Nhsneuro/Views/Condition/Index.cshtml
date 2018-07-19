@@ -13,7 +13,8 @@
     </select>
     <button onclick="addItem()">add item</button>
 
-    <ul id="selectedSymptoms"></ul>
+    <table id="selectedSymptoms">
+    </table>
 
     <table class="table table-bordered table-striped table-responsive">
         <th>Name</th>
@@ -67,12 +68,15 @@
             });
 
             function addItem(){
-                var ul = document.getElementById("selectedList");
-                var symptom = $('symptomsSelectList').find(':selected').text();
-                var li = document.createElement("li");
-                li.setAttribute('id',candidate.value);
-                li.appendChild(document.createTextNode(candidate.value));
-                ul.appendChild(li);
+                var table = document.getElementById("selectedSymptoms");
+                var symptom = document.getElementById("symptomsSelectList").options[document.getElementById("symptomsSelectList").selectedIndex].text;
+                var row = document.insertRow(0);
+
+                var cell1 = row.insert(0);
+                var cell2 = row.insert(1);
+
+                cell1.innerHTML = symptom
+                cell2.innerHTML = "I WILL BE A BUTTON"
             }
         </script>
     }
