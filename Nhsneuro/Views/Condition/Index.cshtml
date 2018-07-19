@@ -90,17 +90,16 @@
             function addItem(){
                 var table = document.getElementById("selectedSymptoms");
                 var symptom = document.getElementById("symptomsSelectList").options[document.getElementById("symptomsSelectList").selectedIndex].text;
-                var row = table.insertRow(0);
+                var row = table.insertRow(-1);
 
-                var cell1 = row.insert(0);
-                var cell2 = row.insert(1);
+                var cell1 = row.insertCell(0);
+                var cell2 = row.insertCell(1);
 
-                cell1.innerHTML = symptom
+                cell1.innerHTML = symptom;
 
                 var btn = document.createElement('input');
                 btn.setAttribute('type', 'button');
-
-                cell2.innerHTML = "RemoveBTN"
+                cell2.innerHTML = "I WILL BE A BUTTON";
             }
         </script>
     }
