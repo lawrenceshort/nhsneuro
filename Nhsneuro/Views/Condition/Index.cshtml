@@ -4,20 +4,18 @@
 <h2>Index</h2>
 <div>
 
-    <select
-        id="symptomsSelectList"
-        name="symptoms"
-        data-source="/api/symptoms"
-        data-valueKey="SymptomId"
-        data-displayKey="Name">
-    </select>
+    <select id="symptomsSelectList"
+            name="symptoms"
+            data-source="/api/symptoms"
+            data-valueKey="SymptomId"
+            data-displayKey="Name"></select>
     <button onclick="addItem()">add item</button>
 
     <table id="selectedSymptoms">
         <th>Selected Symptoms</th>
     </table>
 
-    <table id="conditionList" class="table table-bordered table-striped table-responsive">
+    <table id="conditionList" data-source="/api/conditions" class="table table-bordered table-striped table-responsive">
         <thead>
             <tr>
                 <th>Name</th>
@@ -35,8 +33,10 @@
         <th>Rare</th>
         <th>SnoMedID</th>
         <th>Symptoms</th>
-        @foreach (var Condition in ViewData["Conditions"] as IEnumerable<Condition>)
-        {
+        @foreach (var Condition in ViewData["Conditions"] as IEnumerable
+        <Condition>
+            )
+            {
             <tr>
                 <td>@Condition.Name</td>
                 <td>@Condition.Description</td>
@@ -45,20 +45,20 @@
                 <td>
                     @if (@Condition.ConditionSymptoms.Any())
                     {
-                        <ol>
-                            @foreach (var symptom in @Condition.ConditionSymptoms.Select(s => s.Symptom.Name))
-                            {
-                                <li>@symptom</li>
-                            }
-                        </ol>
+                    <ol>
+                        @foreach (var symptom in @Condition.ConditionSymptoms.Select(s => s.Symptom.Name))
+                        {
+                        <li>@symptom</li>
+                        }
+                    </ol>
                     }
                 </td>
             </tr>
-        }
+            }
     </table>
 
     @section scripts{
-        <script type="text/javascript">
+    <script type="text/javascript">
             $('select[data-source]').each(function() {
                 var $select = $(this);
 
@@ -83,7 +83,36 @@
             $('table[data-source]').each(function() {
                 var $table = $(this);
 
-                $table.append('<tr><td/><td/><tr/>');
+                var table = document.getElementById("conditionList");
+
+                $.ajax({
+                    url: $table.attr('data-source')
+                }).then(function(data) {
+                    data.map(function(datum) {
+                       var row = table.insertRow(-1);
+
+                       var cell0 = row.insertCell(0);
+                       var cell1 = row.insertCell(1);
+                       var cell2 = row.insertCell(2);
+                       var cell3 = row.insertCell(3);
+                       var cell4 = row.insertCell(4);
+
+                       cell0.innerHTML = datum.Name;
+                       cell1.innerHTML = datum.Description;
+                       cell2.innerHTML = datum.IsRare;
+                       cell3.innerHTML = datum.SnoMedId;
+
+                       var symptomsStr = "";
+                       datum.Symptoms.map(function(symptom){
+                           symptomsStr = symptomsStr.concat("- ", symptom, "<br/>")
+                       });
+
+                       cell4.innerHTML = symptomsStr;
+
+
+                    });
+                });
+
 
             });
 
@@ -96,12 +125,9 @@
                 var cell2 = row.insertCell(1);
 
                 cell1.innerHTML = symptom;
-
-                var btn = document.createElement('input');
-                btn.setAttribute('type', 'button');
                 cell2.innerHTML = "I WILL BE A BUTTON";
             }
-        </script>
+    </script>
     }
 
 </div>
