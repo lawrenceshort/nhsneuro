@@ -17,6 +17,18 @@
         <th>Selected Symptoms</th>
     </table>
 
+    <table id="conditionList" class="table table-bordered table-striped table-responsive">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Rare</th>
+                <th>SnoMedID</th>
+                <th>Symptoms</th>
+            </tr>
+        </thead>
+    </table>
+
     <table class="table table-bordered table-striped table-responsive">
         <th>Name</th>
         <th>Description</th>
@@ -68,6 +80,13 @@
                 });
             });
 
+            $('table[data-source]').each(function() {
+                var $table = $(this);
+
+                $table.append('<tr><td/><td/><tr/>');
+
+            });
+
             function addItem(){
                 var table = document.getElementById("selectedSymptoms");
                 var symptom = document.getElementById("symptomsSelectList").options[document.getElementById("symptomsSelectList").selectedIndex].text;
@@ -77,7 +96,11 @@
                 var cell2 = row.insert(1);
 
                 cell1.innerHTML = symptom
-                cell2.innerHTML = "I WILL BE A BUTTON"
+
+                var btn = document.createElement('input');
+                btn.setAttribute('type', 'button');
+
+                cell2.innerHTML = "RemoveBTN"
             }
         </script>
     }
