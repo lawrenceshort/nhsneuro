@@ -3,9 +3,6 @@
 }
 <h2>Index</h2>
 <div>
-    <div id="Symptoms">
-        BOB
-    </div>
     <table class="table table-bordered table-striped table-responsive">
         <th>Name</th>
         <th>Description</th>
@@ -49,7 +46,7 @@
                 $select.append('<option></option>');
 
                 $.ajax({
-                    url: $select.attr('data-source');
+                    url: $select.attr('data-source')
                 }).then(function(options) {
                     options.map(function(option) {
                         var $option = $('<option>');
@@ -62,11 +59,6 @@
 
                     });
                 });
-            });
-
-            //$.ajax({
-                //url: "/api/symptoms",
-                //})
         </script>
     }
 
