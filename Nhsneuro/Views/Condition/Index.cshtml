@@ -3,6 +3,14 @@
 }
 <h2>Index</h2>
 <div>
+
+    <select
+        name="symptoms"
+        data-source="/api/symptoms"
+        data-valueKey="SymptomId"
+        data-displayKey="Name">
+    </select>
+
     <table class="table table-bordered table-striped table-responsive">
         <th>Name</th>
         <th>Description</th>
@@ -30,13 +38,6 @@
             </tr>
         }
     </table>
-
-    <select
-        name="symptoms"
-        data-source="/api/symptoms"
-        data-valueKey="SymptomId"
-        data-displayKey="Name">
-    </select>
 
     @section scripts{
         <script type="text/javascript">
