@@ -1,19 +1,35 @@
 ﻿@{
     ViewBag.Title = "Index";
 }
-<h2>Index</h2>
+<h2>Assess</h2>
 <div>
-
+    
+    <h3>Symptoms presenting</h3>
+    <hr />
     <select id="symptomsSelectList"
             name="symptoms"
             data-source="/api/symptoms"
             data-valueKey="SymptomId"
-            data-displayKey="Name"></select>
-    <button onclick="addItem()">add item</button>
+            data-displayKey="Name"
+            class="form-control"></select>
+    <button onclick="addItem()" class="btn-success">Add</button>
+    
+    <hr />
 
-    <table id="selectedSymptoms">
-        <th>Selected Symptoms</th>
+    <table id="selectedSymptoms" class="table table-bordered table-striped table-responsive">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+        </tr>
+        
+        </thead>
+        
     </table>
+    
+    <hr />
+    
+    <h3>Possible condition</h3>
 
     <table id="conditionList" data-source="/api/conditions/" class="table table-bordered table-striped table-responsive">
         <thead>
