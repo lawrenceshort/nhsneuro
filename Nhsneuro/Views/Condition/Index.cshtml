@@ -5,11 +5,15 @@
 <div>
 
     <select
+        id="symptomsSelectList"
         name="symptoms"
         data-source="/api/symptoms"
         data-valueKey="SymptomId"
         data-displayKey="Name">
     </select>
+    <button onclick="addItem()">add item</button>
+
+    <ul id="selectedSymptoms"></ul>
 
     <table class="table table-bordered table-striped table-responsive">
         <th>Name</th>
@@ -61,6 +65,15 @@
                     });
                 });
             });
+
+            function addItem(){
+                var ul = document.getElementById("selectedList");
+                var symptom = $('symptomsSelectList').find(':selected').text();
+                var li = document.createElement("li");
+                li.setAttribute('id',candidate.value);
+                li.appendChild(document.createTextNode(candidate.value));
+                ul.appendChild(li);
+            }
         </script>
     }
 
