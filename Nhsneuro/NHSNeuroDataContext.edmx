@@ -12,7 +12,7 @@
           <Property Name="ConditionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="500" />
           <Property Name="Description" Type="nvarchar" MaxLength="4000" />
-          <Property Name="IsRare" Type="bit" Nullable="false" />
+          <Property Name="IsRare" Type="bit" />
           <Property Name="SnoMedId" Type="int" />
         </EntityType>
         <EntityType Name="ConditionSymptom">
@@ -48,7 +48,7 @@
           <Property Name="ConditionID" Type="Int32" Nullable="false" />
           <Property Name="Name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
-          <Property Name="IsRare" Type="Boolean" Nullable="false" />
+          <Property Name="IsRare" Type="Boolean" />
           <NavigationProperty Name="ConditionSymptoms" Relationship="nhsneuroModel.ConditionConditionSymptom" FromRole="Condition" ToRole="ConditionSymptom" />
           <Property Name="SnoMedId" Type="Int32" />
         </EntityType>
