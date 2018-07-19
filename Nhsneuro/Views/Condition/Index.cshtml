@@ -27,36 +27,6 @@
         </thead>
     </table>
 
-    <table class="table table-bordered table-striped table-responsive">
-        <th>Name</th>
-        <th>Description</th>
-        <th>Rare</th>
-        <th>SnoMedID</th>
-        <th>Symptoms</th>
-        @foreach (var Condition in ViewData["Conditions"] as IEnumerable
-        <Condition>
-            )
-            {
-            <tr>
-                <td>@Condition.Name</td>
-                <td>@Condition.Description</td>
-                <td>@Condition.IsRare</td>
-                <td>@Condition.SnoMedId</td>
-                <td>
-                    @if (@Condition.ConditionSymptoms.Any())
-                    {
-                    <ol>
-                        @foreach (var symptom in @Condition.ConditionSymptoms.Select(s => s.Symptom.Name))
-                        {
-                        <li>@symptom</li>
-                        }
-                    </ol>
-                    }
-                </td>
-            </tr>
-            }
-    </table>
-
     @section scripts{
     <script type="text/javascript">
             $('select[data-source]').each(function() {
