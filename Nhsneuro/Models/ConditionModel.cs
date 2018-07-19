@@ -9,7 +9,7 @@ namespace Nhsneuro.Models
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public int? SnoMedID { get; set; }
+        public int? SnoMedId { get; set; }
         public bool? IsRare { get; set; }
         public IEnumerable<string> Symptoms { get; set; }
     }

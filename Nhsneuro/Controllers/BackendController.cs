@@ -45,7 +45,7 @@
                     Description = condition.Description,
                     IsRare = condition.IsRare,
                     Name = condition.Name,
-                    SnoMedID = condition.SnoMedId,
+                    SnoMedId = condition.SnoMedId,
                     Symptoms = conditionSymptoms.Select(x => x.Symptom.Name)
                 };
             return result;
@@ -67,7 +67,7 @@
                     Description = condition.Description,
                     IsRare = condition.IsRare,
                     Name = condition.Name,
-                    SnoMedID = condition.SnoMedId,
+                    SnoMedId = condition.SnoMedId,
                     Symptoms = conditionSymptoms.Select(x => x.Symptom.Name)
                 };
             return result;
