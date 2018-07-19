@@ -51,16 +51,18 @@
             });
 
             $('table[data-source]').each(function() {
-                var $table = $(this);
-
-
-
                 getConditions(null);
             });
 
-            function getConditions(ids){
+        function getConditions(ids) {
+            var i = 0;
 
-                $("#conditionList tr").remove();
+                $("#conditionList tr").each(function() {
+                    if (i != 0) {
+                        $(this).remove();
+                    }
+                    i++;
+                });
                 var url = $("#conditionList").attr('data-source');
                 if(ids != null)
                 {
@@ -113,13 +115,13 @@
                 var i = 0;
                 $("#selectedSymptoms tr").each(function() {
                     if (i > 0){
-                        if(id = 1)
+                        if(i == 1)
                         {
                             ids = $(this).children(":first").html();
                         }
                         else
                         {
-                        ids = ids.concat($(this).children(":first").html(), ",");
+                        ids = ids.concat(",", $(this).children(":first").html());
                         }
                     }
                     i++;
